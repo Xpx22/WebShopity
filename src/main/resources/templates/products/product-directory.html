@@ -19,7 +19,7 @@
     <div th:replace="fragments/header :: header"></div>
 
     <h1 id="h1-directory">Product Directory</h1>
-    <a href="/products/create-product" class="btn btn-primary" id="add-product-btn">Add Product</a>
+    <a href="/products/create" class="btn btn-primary" id="add-product-btn">Add Product</a>
     <div class="directory-table">
         <table class="table">
             <thead class="thead-dark">
@@ -33,15 +33,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
+              <tr th:each="product: ${productList}">
+                <td th:text="${product.name}">name</td>
+                <td th:text="${product.description}">description</td>
+                <td th:text="${product.price}">price</td>
+                <td th:text="${product.category}">category</td>
+                <td th:text="${product.manufacturer}">manufacturer</td>
                 <td>
-                    <a href="/update-product" class="btn btn-success">Update</a>
-                    <a href="/products/delete" class="btn btn-danger">Delete</a>
+                    <a th:href="@{/products/update/{id}(id=${product.id})}" class="btn btn-success">Update</a>
+                    <a th:href="@{/products/delete/{id}(id=${product.id})}"
+                        class="btn btn-danger" onClick="if(confirm('Delete this product?')){
+                            return true;
+                        }">
+                        Delete
+                    </a>
                 </td>
               </tr>
             </tbody>

@@ -31,6 +31,10 @@ public class Customer implements Serializable {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getFullname() { return fullname;}
     public void setFullname(String fullname) { this.fullname = fullname; }
 

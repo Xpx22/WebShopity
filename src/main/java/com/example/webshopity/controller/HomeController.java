@@ -33,4 +33,9 @@ public class HomeController {
         model.addAttribute("productList", productListIter.get());
         return "index.html";
     }
+
+    @GetMapping("admin")
+    public String adminDashboard(){
+        return "admin-dashboard.html";
+    }
 }

@@ -10,55 +10,55 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Entity
-public class AppUser implements UserDetails {
+public class AdminUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String userName;
-    private String email;
-    private String password;
-    private String role;
-    @Enumerated(EnumType.STRING)
-    private AppUserRoleEnum appUserRoleEnum;
-    private Boolean locked;
-    private Boolean enabled;
+    private String username = "test";
+    //private String email;
+    private String password = "1234";
+    //private String role;
+    //@Enumerated(EnumType.STRING)
+    //private AppUserRoleEnum appUserRoleEnum;
+    //private Boolean locked;
+    //private Boolean enabled;
 
     //private List<GrantedAuthority> authorities;
 
-    public AppUser(){
+    public AdminUser(){
 
     }
-
-    public AppUser(String userName, String email, String password, String role, AppUserRoleEnum appUserRoleEnum, Boolean locked, Boolean enabled) {
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.appUserRoleEnum = appUserRoleEnum;
-        this.locked = locked;
-        this.enabled = enabled;
-    }
+/*
+    public AdminUser(String userName) {
+        this.username = userName;
+        //this.email = email;
+        //this.password = password;
+        //this.role = role;
+        //this.appUserRoleEnum = appUserRoleEnum;
+        //this.locked = locked;
+        //this.enabled = enabled;
+    }*/
 
     public long getId() {
         return id;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
-
+/*
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
+    }*/
 
     public void setPassword(String password) {
         this.password = password;
     }
-
+/*
     public String getRole() {
         return role;
     }
@@ -90,21 +90,21 @@ public class AppUser implements UserDetails {
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
-
+*/
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRoleEnum.name());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ADMIN");
         return Collections.singletonList(authority);
     }
 
     @Override
     public String getPassword() {
-        return this.password;
+        return "admin";
     }
 
     @Override
     public String getUsername() {
-        return this.userName;
+        return "admin";
     }
 
     @Override
@@ -114,7 +114,7 @@ public class AppUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !this.locked;
+        return true;
     }
 
     @Override
@@ -124,6 +124,6 @@ public class AppUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.enabled;
+        return true;
     }
 }

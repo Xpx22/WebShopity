@@ -18,30 +18,32 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
 
-    <!-- Create Product Section Begin -->
-    <div class="update-product-form">
-        <form action="/products/update" method="post" th:object="${product}">
-            <h2>Update Product</h2>
+    <!-- Update Customer Section Begin -->
+    <div class="create-product-form">
+        <form th:action="@{/customers/save}" method="post" th:object="${customer}">
+            <h2>Customer Info</h2>
+
+            <input type="hidden" th:field="${customer.id}"/>
+
             <div class="form-group">
-                <input type="text" class="form-control" name="productname" placeholder="Product Name*" required="required" th:field="${product.name}">
+                <label for="customername">Full Name:</label>
+                <input type="text" class="form-control" name="customername" placeholder="Full Name*" required="required" th:field="${customer.fullname}">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="category" placeholder="Category Name*" required="required" th:field="${product.category}">
-            </div>        
-            <div class="form-group">
-                <textarea class="form-control" name="description" rows="3" placeholder="Description*" required="required" th:field="${product.description}"></textarea>
-                <!--<input type="text" class="form-control" name="description" placeholder="Description*" required="required" th:field="${product.description}">-->
+                <label for="email">Email: </label>
+                <input type="text" class="form-control" name="email" placeholder="Email*" required="required" th:field="${customer.email}" min="0">
             </div>
             <div class="form-group">
-                <input type="number" class="form-control" name="price" placeholder="Price*" required="required" th:field="${product.price}" min="0">
+                <label for="password">Password: </label>
+                <input type="text" class="form-control" name="password" placeholder="Password*" required="required" th:field="${customer.password}" min="0">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-success">Update Product</button>
-                <a href="/" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-success">Save Customer Info</button>
+                <a href="/customers" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>
-    <!-- Create Product Section End -->
+    <!-- Update Customer Section End -->
 
     <div th:replace="fragments/footer :: footer"></div>
     <!-- Js Plugins -->
