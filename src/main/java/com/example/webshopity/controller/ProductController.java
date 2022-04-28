@@ -38,7 +38,7 @@ public class ProductController {
     public String DisplayUpdateProduct(@PathVariable("id") long id, Model model){
         Optional<Product> p = productRepository.findById(id);
         model.addAttribute("product", p.get());
-        return "products/create-product.html";
+        return "products/update-product.html";
     }
 
     @GetMapping("/products/delete/{id}")

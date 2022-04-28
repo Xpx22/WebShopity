@@ -22,7 +22,15 @@ public class RegisterController {
 
     @PostMapping("/register")
     public String submitRegister(Customer customer, Model model){
-        customerRepository.save(customer);
-        return "redirect: index.html";
+        boolean isExist;
+        var c = customerRepository.findByEmail(customer.getEmail());
+        if(c.isEmpty()){
+            customerRepository.save(customer);
+            isExist = false;
+            return "redirect:/";
+        }
+        isExist = true;
+        model.addAttribute("isExist", isExist);
+        return "register.html";
     }
 }

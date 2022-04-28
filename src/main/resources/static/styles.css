@@ -130,3 +130,17 @@
 .directory-table{
     margin: 0 2rem;
 }
+
+.cart-container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+}
+
+.place-order{
+    width: 30%;
+    margin-top: 3rem;
+    margin-left: 2rem;
+}

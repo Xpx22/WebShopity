@@ -27,10 +27,11 @@ public class HomeController {
             p.setPrice(i);
             productRepository.save(p);
         }*/
-        var productListIter = productRepository.findByCategory("category1");
+        //var productListIter = productRepository.findByCategory("category1");
+        var productListTemp = productRepository.findAll();
         List<Product> productList = new ArrayList<>();
-        //productListIter.forEach(productList::add);
-        model.addAttribute("productList", productListIter.get());
+        productListTemp.forEach(productList::add);
+        model.addAttribute("productList", productList);
         return "index.html";
     }
 
