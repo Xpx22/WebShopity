@@ -39,4 +39,27 @@ public class HomeController {
     public String adminDashboard(){
         return "admin-dashboard.html";
     }
+
+    @GetMapping("cart")
+    public String cartPage(Model model){
+        List<Product> productList = new ArrayList<>();
+        Product p = new Product();
+        p.setId(1L);
+        p.setCategory("cat1");
+        p.setDescription("desc1");
+        p.setManufacturer("manu1");
+        p.setName("name1");
+        p.setPrice(2);
+        productList.add(p);
+        System.out.println(p.getId());
+        int totalSum = p.getPrice();
+        model.addAttribute("productList", productList);
+        model.addAttribute("totalSum", totalSum);
+        return "cart.html";
+    }
+
+    @GetMapping("add")
+    public String errorPage(){
+        return "error.html";
+    }
 }
