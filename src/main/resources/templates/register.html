@@ -19,33 +19,35 @@
     <div th:replace="fragments/header :: header"></div>
 
     <div th:if="${isExist}" class="alert alert-danger"> Email already exists! </div>
+    <div th:if="${isPassWrong}" class="alert alert-danger"> Password and Confirmation does not match! </div>
+    <div th:if="${isExist == false}" class="alert alert-success"> Successful registration! </div>
 
     <!-- Register Section Begin -->
     <div class="signup-form">
-        <form action="/register" method="post">
+        <form th:action="@{/register}" method="post" th:object="${customer}">
             <h2>Register</h2>
             <p class="hint-text">Create your account. It's free and only takes a minute.</p>
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" class="form-control" name="username" placeholder="Username*" required="required" >
+                <input type="text" class="form-control" name="username" placeholder="Username*" required="required" th:field="${customer.username}">
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" class="form-control" name="email" placeholder="Email*" required="required">
+                <input type="email" class="form-control" name="email" placeholder="Email*" required="required" th:field="${customer.email}">
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" class="form-control" name="password" placeholder="Password*" required="required">
+                <input type="password" class="form-control" name="password" placeholder="Password*" required="required" th:field="${customer.password}">
             </div>
             <div class="form-group">
                 <label for="confirm_password">Confirm Password:</label>
-                <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password*" required="required">
+                <input type="password" class="form-control" th:name="confirm_password" placeholder="Confirm Password*" required="required">
             </div>        
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Register Now</button>
             </div>
         </form>
-        <div class="text-center">Already have an account? <a href="/login">Sign in</a></div>
+        <div class="text-center">Already have an account? <a th:href="@{/login}">Sign in</a></div>
     </div>
     <!-- Register Form Section End -->
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <meta charset="UTF-8">
@@ -22,12 +23,17 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-dark">
                 <div class="container-fluid">
                     <a class="navbar-brand text-white" href="/">Webshopity</a>
-                    <a href="/admin" >Admin</a>
-                    <a href="/cart" >View Cart</a>
+                    <a href="/genadmin">Generate Admin</a>
+                    <a href="/admin" sec:authorize="hasAuthority('ADMIN')">Admin</a>
+                    <a href="/gen" sec:authorize="hasAuthority('ADMIN')">generate 10 products</a>
+                    <a href="/cart" sec:authorize="hasAuthority('USER')">View Cart</a>
                     <div>
-                        <a class="btn btn-outline-light" href="/register">Register</a>
-                        <a class="btn btn-light" href="/login">Login</a>
-                        <a class="btn btn-light" href="/logout">Logout</a>
+                        <span sec:authorize="isAuthenticated()" class="text-white">
+                            Welcome <span sec:authentication="name">Username</span>
+                        </span>
+                        <a class="btn btn-outline-light" href="/register" sec:authorize="isAnonymous()">Register</a>
+                        <a class="btn btn-light" href="/login" sec:authorize="isAnonymous()">Login</a>
+                        <a class="btn btn-light" href="/logout" sec:authorize="isAuthenticated()">Logout</a>
                     </div>
                 </div>
             </nav>

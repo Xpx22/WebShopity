@@ -5,7 +5,6 @@
     transform: translate(-50%, -50%);
 }
 
-
 /******************  Header  *****************/
 .btn{
     margin-right: 10px;
@@ -28,10 +27,14 @@
 
 
 /******************  Search bar  *****************/
+.searchbar-width{
+    display: flex;
+    justify-content: center;
+}
+
 .search-bar{
     display: flex;
-    margin: 3rem auto 2rem auto;
-    width: 50%;
+    margin: 3rem 1rem 2rem 1rem;
 }
 /******************  /Search bar  *****************/
 
@@ -140,10 +143,7 @@
 }
 
 .cart-container{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: flex;
     width: 50%;
 }
 

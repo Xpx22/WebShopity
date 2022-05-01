@@ -35,7 +35,7 @@ public class LoginController {
         }
         return "redirect:/login";
     }
-
+/*
     @PostMapping("/login")
     public String submitLogin(Customer customer, Model model){
         if("admin".equals(customer.getEmail()) && "admin".equals(customer.getPassword())){
@@ -49,4 +49,5 @@ public class LoginController {
         model.addAttribute("isExist", true);
         return "login.html";
     }
+    */
 }

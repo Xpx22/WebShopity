@@ -26,8 +26,8 @@
             <input type="hidden" th:field="${customer.id}"/>
 
             <div class="form-group">
-                <label for="customername">Full Name:</label>
-                <input type="text" class="form-control" name="customername" placeholder="Full Name*" required="required" th:field="${customer.fullname}">
+                <label for="customername">Username:</label>
+                <input type="text" class="form-control" name="customername" placeholder="Username*" required="required" th:field="${customer.username}">
             </div>
             <div class="form-group">
                 <label for="email">Email: </label>
@@ -37,6 +37,8 @@
                 <label for="password">Password: </label>
                 <input type="text" class="form-control" name="password" placeholder="Password*" required="required" th:field="${customer.password}" min="0">
             </div>
+
+            <input type="hidden" th:field="${customer.role}"/>
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Save Customer Info</button>
                 <a href="/customers" class="btn btn-secondary">Cancel</a>

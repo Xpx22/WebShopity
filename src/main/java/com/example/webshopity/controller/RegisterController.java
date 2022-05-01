@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Objects;
 
 @Controller
 public class RegisterController {
@@ -17,17 +20,23 @@ public class RegisterController {
     public String displayRegister(Model model){
         Customer customer = new Customer();
         model.addAttribute("customer", customer);
+        model.addAttribute("isPassWrong", false);
         return "register.html";
     }
 
     @PostMapping("/register")
-    public String submitRegister(Customer customer, Model model){
+    public String submitRegister(Customer customer, @RequestParam("confirm_password") String confirm, Model model){
+        if (!Objects.equals(customer.getPassword(), confirm)){
+            model.addAttribute("isPassWrong", true);
+            model.addAttribute("confirm", confirm);
+            return "register.html";
+        }
         boolean isExist;
         var c = customerRepository.findByEmail(customer.getEmail());
         if(c.isEmpty()){
+            customer.setRole("USER");
             customerRepository.save(customer);
-            isExist = false;
-            return "redirect:/";
+            return "redirect:/login";
         }
         isExist = true;
         model.addAttribute("isExist", isExist);

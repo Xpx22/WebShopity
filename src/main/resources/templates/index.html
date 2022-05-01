@@ -20,20 +20,40 @@
     <div th:if="${param.logout}" class="alert alert-success">
         Logged out successfully!
     </div>
-    <form class="search-bar" method="post">
-        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="product-btn" autocomplete="off" checked>
-            <label class="btn btn-outline-primary" for="product-btn">Products</label>
-          
-            <input type="radio" class="btn-check" name="btnradio" id="category-btn" autocomplete="off">
-            <label class="btn btn-outline-warning" for="category-btn">Categories</label>
-          
-            <input type="radio" class="btn-check" name="btnradio" id="manufacturer-btn" autocomplete="off">
-            <label class="btn btn-outline-secondary" for="manufacturer-btn">Manufacturer</label>
+    <div class="searchbar-width" th:object="${searchParam}">
+        <form class="search-bar search-bar-sub" method="post" th:action="@{/products}">
+            <input class="form-control" type="search" placeholder="Products Name" id="product" th:field="${searchParam.product}">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        <form class="search-bar search-bar-sub" method="post" th:action="@{/categories}">
+            <input class="form-control" type="search" placeholder="Categories" id="category" th:field="${searchParam.category}">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        <form class="search-bar search-bar-sub" method="post" th:action="@{/manufacturers}">
+            <input class="form-control" type="search" placeholder="Manufacturers" id="manufacturer" th:field="${searchParam.manufacturer}">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </div>
+   <!-- <form class="search-bar" method="post" th:action="@{/search}" th:object="${searchParam}">
+        <div class="btn-group" role="group">
+            <label class="btn btn-outline-primary" th:for="${#ids.next('product')}" th:text="'Products'"></label>
+            <input type="radio" class="btn-check" autocomplete="off" th:field="${searchParam.product}" value="products">
+
+            <label class="btn btn-outline-warning" th:for="${#ids.next('category')}" th:text="'Categories'"></label>
+            <input type="radio" class="btn-check" autocomplete="off" th:field="${searchParam.category}" value="categories">
+
+            <label class="btn btn-outline-secondary" th:for="${#ids.next('manufacturer')}" th:text="'Manufacturers'"></label>
+            <input type="radio" class="btn-check" autocomplete="off" th:field="${searchParam.manufacturer}" value="manufacturers">
           </div>
-        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control" type="search" placeholder="Search" name="search" th:field="${searchParam.search}">
         <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
+        <input class="form-control" type="search" placeholder="Search" name="search" th:field="${searchParam.search}">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+
+    </form>-->
+
 
     <div class="products-list">
         <div class="card bg-dark text-white" th:each="product: ${productList}" th:if="${productList.size() > 0}">

@@ -22,7 +22,7 @@ class WebShopityApplicationTests {
     @Test
     public void testCreateCustomer(){
         Customer c = new Customer();
-        c.setFullname("Test name");
+        c.setUsername("Test name");
         c.setEmail("test@test.com");
         c.setPassword("123");
         customerRepository.save(c);
@@ -33,14 +33,14 @@ class WebShopityApplicationTests {
         Optional<Customer> p = customerRepository.findById(1L);
         System.out.println(p.isPresent());
         if(p.isPresent()){
-            System.out.println(p.get().getFullname());
+            System.out.println(p.get().getUsername());
         }
     }
 
     @Test
     public void testUpdateCustomer(){
         Optional<Customer> c = customerRepository.findById(1L);
-        c.get().setFullname("New name");
+        c.get().setUsername("New name");
         customerRepository.save(c.get());
     }
     @Test
