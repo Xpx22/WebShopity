@@ -18,44 +18,33 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
 
-    <h1 id="h1-directory">Order Directory</h1>
-    <div class="searchbar-width" th:object="${orderSearchParam}">
-        <form class="search-bar search-bar-sub" method="post" th:action="@{/orders}">
-            <label for="orderSearch">Order Number:</label>
-            <input class="form-control" type="number" placeholder="Order Number" id="orderSearch" th:field="${orderSearchParam.orderNumber}" min="0">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-    </div>
-
-    <div class="directory-table">
+    <h1 class="center-h1">Your Order's</h1>
+    <div class="cart-container" th:if="${orderList.size() > 0}">
         <table class="table">
             <thead class="thead-dark">
               <tr>
-                  <th scope="col">Order id</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Order sum</th>
+                <th scope="col">Order id</th>
+                <th scope="col">Status</th>
+                <th scope="col">Products</th>
+                <th scope="col">Order total:</th>
               </tr>
             </thead>
             <tbody>
               <tr th:each="order: ${orderList}">
-                  <td th:text="${order.id}">id</td>
-                  <td th:text="${order.Status}">Status</td>
-                  <td th:inline="text">
-                      [[${order.orderSum}]] Ft
+                  <td th:text="${order.id}"></td>
+                  <td th:text="${order.status}"></td>
+                  <td>
+                      <a th:href="@{/user/orders/{oid}(oid=${order.id})}">Check order products</a>
                   </td>
-                <td>
-                    <a th:href="@{/orders/update/{id}(id=${order.id})}" class="btn btn-success">Update</a>
-                    <a th:href="@{/orders/delete/{id}(id=${order.id})}"
-                        class="btn btn-danger" onClick="if(!confirm('Delete this product?')){
-                            return false;
-                        }">
-                        Delete
-                    </a>
-                </td>
+                  <td th:inline="text">
+                      <span>Total: [[${order.orderSum}]] Ft</span>
+                  </td>
               </tr>
             </tbody>
           </table>
     </div>
+    <p th:if="${orderList.size() < 1}" class="absolute-middle text-center"> You have no active orders! </p>
+
       
 
     <div th:replace="fragments/footer :: footer"></div>

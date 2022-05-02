@@ -138,17 +138,28 @@
     margin-left: 2rem;
     margin-bottom: 3rem;
 }
+
 .directory-table{
-    margin: 0 2rem;
+    margin: 1rem 2rem 3rem 2rem;
 }
 
 .cart-container{
-    display: flex;
+    margin-left:auto;
+    margin-right:auto;
     width: 50%;
 }
 
 .place-order{
+    height: 10%;
     width: 30%;
-    margin-top: 3rem;
     margin-left: 2rem;
+}
+
+.center-h1{
+    margin: 3rem auto;
+    text-align: center;
+}
+
+.paginate-margin{
+    margin-top: 3rem;
 }

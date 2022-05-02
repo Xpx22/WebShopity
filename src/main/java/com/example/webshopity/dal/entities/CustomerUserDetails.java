@@ -16,6 +16,9 @@ public class CustomerUserDetails implements UserDetails {
         this.customer = customer;
     }
 
+    public Long getId(){
+        return this.customer.getId();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -31,7 +34,7 @@ public class CustomerUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return customer.getEmail();
+        return customer.getUsername();
     }
 
     @Override

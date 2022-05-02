@@ -18,19 +18,27 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
     <h1 class="h1-text text-center">Shopping cart</h1>
-    <div class="absolute-middle cart-container" th:if="${productList.size() >0}">
+    <div class="cart-container" th:if="${productList.size() >0}">
         <div class="directory-table">
             <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
                 <tbody>
                     <tr th:each="product: ${productList}">
                         <td th:text="${product.name}">name</td>
                         <td th:text="${product.description}">description</td>
-                        <td th:text="${product.category}">category</td>
-                        <td th:text="${product.manufacturer}">manufacturer</td>
-                        <td th:text="${product.price}">price</td>
+                        <td th:inline="text">
+                            [[${product.price}]] Ft
+                        </td>
                         <td>
                             <a
-                                class="btn btn-danger" th:href="@{/cart/delete/{id}(id=${product.id})}" onClick="if(!confirm('Delete this product?')){
+                                class="btn btn-danger" th:href="@{/cart/delete/{pid}(pid=${product.id})}" onClick="if(!confirm('Delete this product?')){
                                     return false;
                                 }">
                                 Delete
@@ -40,11 +48,12 @@
                 </tbody>
             </table>
             <span>Total:
-                <span th:text="${totalSum}"></span>
+                <span th:inline="text">
+                     [[${totalSum}]] Ft
+                </span>
             </span>
-
+            <a class="btn btn-warning place-order text-center" th:href="@{/cart/order}">Place Order</a>
         </div>
-        <button th:href="@{/cart/create/{id}(id=${product.id})}" class="btn btn-warning place-order">Place Order</button>
     </div>
     <p th:if="${productList.size() < 1}" class="absolute-middle text-center"> Shopping cart is empty! </p>
 

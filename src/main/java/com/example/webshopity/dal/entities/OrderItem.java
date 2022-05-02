@@ -4,15 +4,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "cartitems")
-public class CartItem implements Serializable {
+@Table(name = "orderitems")
+public class OrderItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -27,12 +27,12 @@ public class CartItem implements Serializable {
         this.id = id;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Product getProduct() {
@@ -42,6 +42,6 @@ public class CartItem implements Serializable {
     public void setProduct(Product product) {
         this.product = product;
     }
-
 }
+
 

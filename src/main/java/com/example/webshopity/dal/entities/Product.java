@@ -19,18 +19,15 @@ public class Product implements Serializable {
     @Column(name = "price")
     private int price;
 
-    @Column(name = "quantity")
-    private int quantity;
-
     @Column(name = "category")
     private String category;
 
-
     @Column(name = "manufacturer")
     private String manufacturer;
-
+/*
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST},
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY)*/
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
@@ -45,14 +42,6 @@ public class Product implements Serializable {
 
     public int getPrice() {return price;}
     public void setPrice(int price) {this.price = price;}
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public String getCategory() {return category;}
     public void setCategory(String category) {this.category = category;}

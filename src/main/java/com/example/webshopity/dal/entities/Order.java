@@ -16,20 +16,21 @@ public class Order implements Serializable {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "ordersum")
+    private int orderSum;
+
     //(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST},
     //                fetch = FetchType.LAZY)
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+/*
+    @OneToMany(mappedBy = "order")
+    private List<Product> productList;
 
-    //@OneToMany(mappedBy = "order")
-    //private List<Product> productList;
-
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "product_id")
-    private Product product;
-
-    private int quantity;
+    private Product product;*/
 
 
     public Long getId() {
@@ -56,19 +57,12 @@ public class Order implements Serializable {
         this.customer = customer;
     }
 
-    public Product getProduct() {
-        return product;
+    public int getOrderSum() {
+        return orderSum;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setOrderSum(int orderSum) {
+        this.orderSum = orderSum;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }

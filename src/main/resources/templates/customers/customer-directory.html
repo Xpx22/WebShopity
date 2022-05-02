@@ -20,10 +20,19 @@
 
     <h1 id="h1-directory">Customer Directory</h1>
 
+    <div class="searchbar-width" th:object="${customerSearchParam}">
+        <form class="search-bar search-bar-sub" method="post" th:action="@{/customers}">
+            <label for="customerSearch">Customer ID:</label>
+            <input class="form-control" type="number" placeholder="Customer ID: " id="customerSearch" th:field="${customerSearchParam.customerId}" min="0">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </div>
+
     <div class="directory-table">
         <table class="table">
             <thead class="thead-dark">
               <tr>
+                <th scope="col">Customer ID</th>
                 <th scope="col">Full Name</th>
                 <th scope="col">email</th>
                 <th scope="col">Password</th>
@@ -32,14 +41,15 @@
             </thead>
             <tbody>
               <tr th:each="customer: ${customerList}">
+                <td th:text="${customer.id}">Customer ID</td>
                 <td th:text="${customer.username}">Username</td>
                 <td th:text="${customer.email}">Email</td>
                 <td th:text="${customer.password}">Password</td>
                 <td>
                     <a th:href="@{/customers/update/{id}(id=${customer.id})}" class="btn btn-success">Update</a>
                     <a th:href="@{/customers/delete/{id}(id=${customer.id})}"
-                        class="btn btn-danger" onClick="if(confirm('Delete this customer?')){
-                            return true;
+                        class="btn btn-danger" onClick="if(!confirm('Delete this product?')){
+                            return false;
                         }">
                         Delete
                     </a>
