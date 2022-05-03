@@ -23,14 +23,8 @@ public class Customer implements Serializable {
     @Column(name = "role", nullable = false)
     private String role;
 
-
-    @OneToMany(mappedBy = "customer")
-    private List<CartItem> cartItemList;
-
     @OneToMany(mappedBy = "customer")
     private List<Order> orderList;
-
-
 
     public Long getId() {
         return id;

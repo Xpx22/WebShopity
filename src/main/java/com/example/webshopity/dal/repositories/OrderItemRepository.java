@@ -17,4 +17,6 @@ public interface OrderItemRepository extends CrudRepository<OrderItem, Long> {
     void deleteByOrder(Order order);
     @Query("select oi from OrderItem oi where oi.order.id = :orderId")
     Optional<List<OrderItem>> findProductsByOrderId(@Param("orderId") long orderId);
+
+    Optional<OrderItem> findByProduct(Product product);
 }

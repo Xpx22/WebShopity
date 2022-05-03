@@ -16,6 +16,7 @@ public interface CartItemRepository extends CrudRepository<CartItem, Long> {
      Optional<List<CartItem>> findByCustomer(Customer customer);
 
      Optional<CartItem> findByCustomerAndProduct(Customer customer, Product product);
+     Optional<CartItem> findByProduct(Product product);
 
      @Transactional
      void deleteByCustomer(Customer customer);

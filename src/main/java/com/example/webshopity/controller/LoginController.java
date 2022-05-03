@@ -9,11 +9,8 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 @Controller
 public class LoginController {
@@ -33,21 +30,6 @@ public class LoginController {
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/login";
+        return "redirect:/";
     }
-/*
-    @PostMapping("/login")
-    public String submitLogin(Customer customer, Model model){
-        if("admin".equals(customer.getEmail()) && "admin".equals(customer.getPassword())){
-            return "admin-dashboard.html";
-        }
-        Optional<Customer> customerTemp = customerRepository.findByEmailAndPassword(customer.getEmail(), customer.getPassword());
-        if(customerTemp.isPresent()){
-            return "redirect:/";
-        }
-
-        model.addAttribute("isExist", true);
-        return "login.html";
-    }
-    */
 }

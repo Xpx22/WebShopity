@@ -1,13 +1,9 @@
 package com.example.webshopity.controller;
 
-import com.example.webshopity.SearchParam;
 import com.example.webshopity.dal.entities.CustomerUserDetails;
 import com.example.webshopity.dal.entities.Order;
 import com.example.webshopity.dal.entities.Product;
-import com.example.webshopity.dal.repositories.CustomerRepository;
-import com.example.webshopity.dal.repositories.OrderItemRepository;
-import com.example.webshopity.dal.repositories.OrderRepository;
-import com.example.webshopity.dal.repositories.ProductRepository;
+import com.example.webshopity.dal.repositories.*;
 import com.example.webshopity.OrderSearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -61,7 +57,7 @@ public class OrderController {
     }
 
     @PostMapping("orders/save")
-    public String SaveOrderInfo(Model model, Order order){
+    public String SaveOrderInfo(Order order){
         orderRepository.save(order);
         return "redirect:/orders";
     }
@@ -103,23 +99,18 @@ public class OrderController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomerUserDetails customerUser = (CustomerUserDetails) auth.getPrincipal();
         var customer = customerRepository.findById(customerUser.getId());
-
-        //todo dont know why cant find by id
-        //var orderList = orderRepository.findByCustomer(customer.get().getId());
-        List<Product> productList = new ArrayList<>();
-        var orderItemList = orderItemRepository.findProductsByOrderId(oid);
-
-        for (int i = 0; i < orderItemList.get().size(); i++){
-            productList.add(orderItemList.get().get(i).getProduct());
+        var orders = orderRepository.findByCustomer(customer.get().getId());
+        for (var order: orders.get()){
+            if (order.getId() == oid){
+                List<Product> productList = new ArrayList<>();
+                var orderItemList = orderItemRepository.findProductsByOrderId(oid);
+                for (int i = 0; i < orderItemList.get().size(); i++){
+                    productList.add(orderItemList.get().get(i).getProduct());
+                }
+                model.addAttribute("productList", productList);
+                return "user-orders-products.html";
+            }
         }
-        /*
-        for (int i = 0; i < orderList.get().size(); i++){
-            var product = productRepository.findById(orderList.get().get(i).getProduct().getId());
-            productList.add(product.get());
-        }*/
-
-        //model.addAttribute("productList", customer.get().getOrderList().get((int) oid - 1).getProductList());
-        model.addAttribute("productList", productList);
-        return "user-orders-products.html";
+        return "error.html";
     }
 }

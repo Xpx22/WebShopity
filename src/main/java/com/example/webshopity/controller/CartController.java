@@ -1,6 +1,5 @@
 package com.example.webshopity.controller;
 
-import com.example.webshopity.SearchParam;
 import com.example.webshopity.dal.entities.*;
 import com.example.webshopity.dal.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ public class CartController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomerUserDetails customerUser = (CustomerUserDetails) auth.getPrincipal();
         var customer = customerRepository.findById(customerUser.getId());
-
         var cartItemsList = cartItemRepository.findByCustomer(customer.get());
         if (cartItemsList.isPresent() && cartItemsList.get().size() < 1){
             model.addAttribute("productList", new ArrayList<Product>());
@@ -51,8 +49,8 @@ public class CartController {
         }
 
         int totalSum = 0;
-        for (int i = 0; i < productList.size(); i++){
-            totalSum += productList.get(i).getPrice();
+        for (Product product : productList) {
+            totalSum += product.getPrice();
         }
 
         model.addAttribute("productList", productList);
@@ -61,7 +59,7 @@ public class CartController {
     }
 
     @GetMapping("cart/add/{pid}")
-    public String addToCart(Model model, @PathVariable("pid") Long pid){
+    public String addToCart(@PathVariable("pid") Long pid){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomerUserDetails customerUser = (CustomerUserDetails) auth.getPrincipal();
         var customer = customerRepository.findById(customerUser.getId());
@@ -73,18 +71,11 @@ public class CartController {
             ci.setProduct(product.get());
             cartItemRepository.save(ci);
         }
-
-        model.addAttribute("searchParam", new SearchParam());
-        var productListTemp = productRepository.findAll();
-        List<Product> productList = new ArrayList<>();
-        productListTemp.forEach(productList::add);
-        model.addAttribute("productList", productList);
-        model.addAttribute("addedToCart", true);
-        return "index.html";
+        return "redirect:/?addedtocart=true";
     }
 
     @GetMapping("cart/delete/{pid}")
-    public String removerFromCart(Model model, @PathVariable("pid") Long pid){
+    public String removerFromCart(@PathVariable("pid") Long pid){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomerUserDetails customerUser = (CustomerUserDetails) auth.getPrincipal();
         var customer = customerRepository.findById(customerUser.getId());
@@ -109,42 +100,25 @@ public class CartController {
             System.out.println("product: " + productList.get(i).getName());
         }
 
-
         int orderSum = 0;
         for (var product: productList){
             orderSum = orderSum + product.getPrice();
-
-
         }
-
-/*
-        for (int i = 0; i < productList.size(); i++){
-            Order order = new Order();
-            order.setCustomer(customer.get());
-            order.setStatus("Submitted");
-            order.setProduct(productList.get(i));
-            order.setOrderSum(orderSum);
-            customer.get().getOrderList().add(order);
-            orderRepository.save(order);
-        }*/
 
         Order order = new Order();
         order.setCustomer(customer.get());
         order.setStatus("Submitted");
-        //order.setProductList(productList);
         order.setOrderSum(orderSum);
         customer.get().getOrderList().add(order);
         orderRepository.save(order);
 
-        for (int i = 0; i < productList.size(); i++){
+        for (Product product : productList) {
             OrderItem oi = new OrderItem();
             oi.setOrder(order);
-            oi.setProduct(productList.get(i));
+            oi.setProduct(product);
             orderItemRepository.save(oi);
         }
-
         cartItemRepository.deleteByCustomer(customer.get());
         return "redirect:/";
     }
-
 }

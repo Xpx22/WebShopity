@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -20,50 +20,41 @@
     <div th:if="${param.logout}" class="alert alert-success">
         Logged out successfully!
     </div>
-    <div th:if="${addedToCart == true}" class="alert alert-success">
-        Added Item to cart!
+    <div th:if="${param.addedtocart}" class="alert alert-success">
+        Added to cart!
     </div>
-    <div class="searchbar-width" th:object="${searchParam}">
-        <form class="search-bar search-bar-sub" method="post" th:action="@{/searchproducts}">
-            <input class="form-control" type="search" placeholder="Products Name" id="product" th:field="${searchParam.product}">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-
-        <form class="search-bar search-bar-sub" method="post" th:action="@{/searchcategories}">
-            <input class="form-control" type="search" th:placeholder="Categories" id="Categories" th:field="${searchParam.category}" th:name="Categories">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-
-        <form class="search-bar search-bar-sub" method="post" th:action="@{/searchmanufacturers}">
-            <input class="form-control" type="search" placeholder="Manufacturers" id="manufacturer" th:field="${searchParam.manufacturer}">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-    </div>
-
-    <div class="products-list">
-        <div class="card bg-dark text-white" th:each="product: ${productList}" th:if="${productList.size() > 0}" id="productlist">
-            <div class="card-body" >
-                <h5 class="card-title" th:text="${product.name}">Product Name1</h5>
-                <p class="card-text" th:text="${product.manufacturer}"> manu1</p>
-                <p class="card-text" th:text="${product.category}"> category1</p>
-                <p class="card-text" th:text="${product.description}"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima repudiandae natus commodi recusandae magni consequatur. </p>
-                <p th:inline="text">
-                    [[${product.price}]] Ft
-                </p>
-                <a th:href="@{/cart/add/{pid}(pid=${product.id})}" class="btn btn-success">Add to cart</a>
-            </div>
+    <div class="searchbar-width">
+        <div class="search-bar search-bar-sub">
+            <input class="form-control" placeholder="Products Name" id="product">
+            <button class="btn btn-outline-success" id="searchName">Search</button>
         </div>
-        <div th:if="${productList.size() < 1}">
+
+        <div class="search-bar search-bar-sub">
+            <input class="form-control" placeholder="Categories" id="category">
+            <button class="btn btn-outline-success" id="searchCategory">Search</button>
+        </div>
+
+        <div class="search-bar search-bar-sub">
+            <input class="form-control" placeholder="Manufacturers" id="manufacturer">
+            <button class="btn btn-outline-success" id="searchManufacturer">Search</button>
+        </div>
+    </div>
+
+    <div class="products-list" id="productlist">
+        <div th:if="${productListSize < 1}">
             <p class="text-center">No Products found :(</p>
         </div>
     </div>
 
-    <nav th:if="${productList.size() > 0}" class="d-flex justify-content-center">
+    <nav th:if="${productListSize > 0}" class="d-flex justify-content-center">
         <ul class="pagination text-center paginate-margin">
-            <li class="">
+            <li>
                 <button class="btn btn-secondary" id="previous-btn">Previous</button>
             </li>
-            <li class="">
+            <li id="page-number-p" >
+                <!--<p class="btn btn-info">Page: 1</p>-->
+            </li>
+            <li>
                 <button class="btn btn-primary" id="next-btn">Next</button>
             </li>
         </ul>
@@ -71,122 +62,197 @@
 
     <div th:replace="fragments/footer :: footer"></div>
     <!-- Js Plugins -->
-    <script
-            src="https://code.jquery.com/jquery-3.6.0.min.js"
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" ></script>
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" ></script>
     <script>
-        $(document).ready(function (){
-            if(window.location.href.includes("search")){
-                $("#previous-btn").hide();
-                $("#next-btn").hide();
-            }else {
-                var searchParams = new URLSearchParams(window.location.search)
-                if (!searchParams.get("currentPage")){
-                    window.location.replace("http://localhost:8080?currentPage=0");
-                }
+        let currentPage = 0;
+        const productURL = "http://localhost:8080/allproducts?currentPage=";
+
+        function ajaxDefault(product, category, manufacturer){
+            const productnameParam = product;
+            const categoryParam = category;
+            const manufacturerParam = manufacturer;
+            let url = "";
+            if(productnameParam){
+                url = productURL+currentPage+"&productname="+$("#product").val();
+            }else if(categoryParam){
+                url = productURL+currentPage+"&category="+$("#category").val();
+            }else if(manufacturerParam){
+                url = productURL+currentPage+"&manufacturer="+$("#manufacturer").val();
+            }else{
+                url = productURL+currentPage;
             }
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: url,
+                success: function (data){
+                    console.log(data);
+                    if(data.length > 0){
+                        let html = "";
+                        for (let i = 0; i < data.length; i++){
+                            let tempHTML = "";
+                            tempHTML =
+                                "<div class=\"card bg-dark text-white\">"+
+                                "<div class=\"card-body\" >" +
+                                "                <h5 class=\"card-title\">"+data[i].name+"</h5>" +
+                                "                <p class=\"card-text\">"+data[i].manufacturer+"</p>" +
+                                "                <p class=\"card-text\">"+data[i].category+"</p>" +
+                                "                <p class=\"card-text\">"+data[i].description+"</p>" +
+                                "                <p>"+data[i].price+" Ft" +"</p>" +
+                                "                <a href=\"/cart/add/"+data[i].id+"\" class=\"btn btn-success\">Add to cart</a>" +
+                                "</div>"+
+                                "</div>"
+                            html+=tempHTML;
+                        }
+                        $("#productlist").html(html);
+                        $("#page-number-p").html("<p class=\"btn btn-info\">Page:"+(currentPage+1)+"</p>");
+                        if(url.includes("product=")){
+                            $("#product").val(productnameParam);
+                        }else if(url.includes("category=")){
+                            $("#category").val(categoryParam);
+                        }else if(url.includes("manufacturer=")){
+                            $("#manufacturer").val(manufacturerParam);
+                        }
+                    }
+                    else {
+                        if(!currentPage == 0){
+                            alert("No more items to show!");
+                        }
+                    }
+                },
+                error: function (){
+                    alert("default ajax error! url: "+url);
+                }
+            });
+        }
+
+        $(document).ready(function (){
+            ajaxDefault();
         });
 
         $("#previous-btn").click(function(event) {
-            $("#previous-btn").prop("disabled", true);
-            var searchParams = new URLSearchParams(window.location.search)
-            if (searchParams.get("currentPage") === "0"){
+            $("#previous-btn").attr("disabled", true);
+            if (currentPage === 0){
                 alert("You are on the first page!");
+                $("#previous-btn").attr("disabled", false);
             }else {
-                ajaxGetPreviousPage();
+                ajaxPaginate("Cannot show previous", false);
             }
-            $("#previous-btn").prop("disabled", false);
         });
 
         $("#next-btn").click(function(event) {
-            $("#next-btn").prop("disabled", true);
-            ajaxGetNextPage();
-            $("#next-btn").prop("disabled", false);
+            $("#next-btn").attr("disabled", true);
+            ajaxPaginate("No more items to show!", true);
         });
 
-        function ajaxGetNextPage() {
-            var searchParams = new URLSearchParams(window.location.search);
-            var currentPage = searchParams.get("currentPage");
-            var url = "http://localhost:8080/getproducts?currentPage="+currentPage;
-            var nextPage = +currentPage+1;
-            jQuery.ajax({
+        function ajaxPaginate(alertMessage, isNext){
+            const productnameParam = $("#product").val();
+            const categoryParam = $("#category").val();
+            const manufacturerParam = $("#manufacturer").val();
+            let url = "";
+            if(isNext){
+                const nextPage = currentPage+1;
+                if(productnameParam){
+                    url = productURL+nextPage+"&productname="+$("#product").val();
+                }else if(categoryParam){
+                    url = productURL+nextPage+"&category="+$("#category").val();
+                }else if(manufacturerParam){
+                    url = productURL+nextPage+"&manufacturer="+$("#manufacturer").val();
+                }else{
+                    url = productURL+nextPage;
+                }
+            }else {
+                const prevPage = currentPage-1;
+                if(productnameParam){
+                    url = productURL+prevPage+"&productname="+$("#product").val();
+                }else if(categoryParam){
+                    url = productURL+prevPage+"&category="+$("#category").val();
+                }else if(manufacturerParam){
+                    url = productURL+prevPage+"&manufacturer="+$("#manufacturer").val();
+                }else{
+                    url = productURL+prevPage;
+                }
+            }
+            $.ajax({
                 type: "GET",
                 contentType: "application/json",
                 url: url,
                 success: function (data){
-                    console.log(data.content);
-                    if(data.content.length > 0){
-                        window.location.replace("http://localhost:8080/?currentPage="+nextPage);
+                    if(data.length > 0){
+                        if(isNext){
+                            currentPage = +currentPage + 1;
+                        }else {
+                            currentPage = +currentPage - 1;
+                        }
                         var html = "";
-                        for (var i = 0; i < data.content.length; i++){
-                            var tempHTML = "<div class=\"card-body\" >\n" +
-                                "                <h5 class=\"card-title\">"+data.content[i].name+"</h5>\n" +
-                                "                <p class=\"card-text\">"+data.content[i].manufacturer+"</p>\n" +
-                                "                <p class=\"card-text\">"+data.content[i].category+"</p>\n" +
-                                "                <p class=\"card-text\">"+data.content[i].description+"</p>\n" +
-                                "                <p th:inline=\"text\">\n" +
-                                "                    "+data.content[i].price+" Ft\n" +
-                                "                </p>\n" +
-                                "                <a th:href=\"@{/cart/add/{pid}(pid=${"+data.content[i].id+"})}\" class=\"btn btn-success\">Add to cart</a>\n" +
-                                "            </div>"
+                        for (var i = 0; i < data.length; i++){
+                            var tempHTML = "";
+                            tempHTML =
+                                "<div class=\"card bg-dark text-white\">"+
+                                "<div class=\"card-body\" >" +
+                                "                <h5 class=\"card-title\">"+data[i].name+"</h5>" +
+                                "                <p class=\"card-text\">"+data[i].manufacturer+"</p>" +
+                                "                <p class=\"card-text\">"+data[i].category+"</p>" +
+                                "                <p class=\"card-text\">"+data[i].description+"</p>" +
+                                "                <p>"+data[i].price+" Ft" +"</p>" +
+                                "                <a href=\"/cart/add/"+data[i].id+"\" class=\"btn btn-success\">Add to cart</a>" +
+                                "</div>"+
+                                "</div>"
                             html+=tempHTML;
                         }
                         $("#productlist").html(html);
+                        if(isNext){
+                            $("#page-number-p").html("<p class=\"btn btn-info\">Page:"+(currentPage+1)+"</p>");
+                        }else {
+                            $("#page-number-p").html("<p class=\"btn btn-info\">Page:"+(currentPage+1)+"</p>");
+                        }
+                        $("#product").val(productnameParam);
+                        $("#category").val(categoryParam);
+                        $("#manufacturer").val(manufacturerParam);
+                        $("#next-btn").attr("disabled", false);
+                        $("#previous-btn").attr("disabled", false);
                     }
                     else {
-                        alert("No more items to show!");
+                        alert(alertMessage);
+                        $("#next-btn").attr("disabled", false);
+                        $("#previous-btn").attr("disabled", false);
                     }
                 },
                 error: function (){
-                    alert(url);
-                    alert("next not okay");
+                    alert("An error occured while paginating");
+                    $("#next-btn").attr("disabled", false);
+                    $("#previous-btn").attr("disabled", false);
                 }
             });
         }
 
-        function ajaxGetPreviousPage(){
-            var searchParams = new URLSearchParams(window.location.search);
-            var currentPage = searchParams.get("currentPage");
-            var prevPage = parseInt(currentPage)-1;
-            var url = "http://localhost:8080/getproducts?currentPage="+prevPage;
-            
-            jQuery.ajax({
-                type: "GET",
-                contentType: "application/json",
-                url: url,
-                success: function (data){
-                    console.log(data.content);
-                    if(data.content.length > 0){
-                        window.location.replace("http://localhost:8080/?currentPage="+prevPage);
-                        var html = "";
-                        for (var i = 0; i < data.content.length; i++){
-                            var tempHTML = "<div class=\"card-body\" >\n" +
-                                "                <h5 class=\"card-title\">"+data.content[i].name+"</h5>\n" +
-                                "                <p class=\"card-text\">"+data.content[i].manufacturer+"</p>\n" +
-                                "                <p class=\"card-text\">"+data.content[i].category+"</p>\n" +
-                                "                <p class=\"card-text\">"+data.content[i].description+"</p>\n" +
-                                "                <p th:inline=\"text\">\n" +
-                                "                    "+data.content[i].price+" Ft\n" +
-                                "                </p>\n" +
-                                "                <a th:href=\"@{/cart/add/{pid}(pid=${"+data.content[i].id+"})}\" class=\"btn btn-success\">Add to cart</a>\n" +
-                                "            </div>"
-                            html+=tempHTML;
-                        }
-                        $("#productlist").html(html);
-                    }
-                    else {
-                        alert("No more items to show!");
-                    }
-                },
-                error: function (){
-                    alert(url);
-                    alert("next not okay");
-                }
-            });
+
+        function checkBeforeClick(){
+            const prodParam = $("#product").val();
+            const catParam = $("#category").val();
+            const manuParam = $("#manufacturer").val();
+            const is2Parameter = prodParam && catParam || prodParam && manuParam || catParam && manuParam;
+            if (is2Parameter){
+                alert("Only 1 search parameter is supported.");
+                return;
+            }
+            window.location.replace("http://localhost:8080");
+            ajaxDefault(prodParam, catParam, manuParam);
         }
+
+        $("#searchName").click(function(event){
+            checkBeforeClick();
+        });
+        $("#searchCategory").click(function(event){
+            checkBeforeClick();
+        });
+        $("#searchManufacturer").click(function(event){
+            checkBeforeClick();
+        });
+
     </script>
 </body>
 

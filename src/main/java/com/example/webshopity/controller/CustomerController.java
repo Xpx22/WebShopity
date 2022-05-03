@@ -1,10 +1,8 @@
 package com.example.webshopity.controller;
 
 import com.example.webshopity.CustomerSearchParam;
-import com.example.webshopity.OrderSearchParam;
 import com.example.webshopity.dal.entities.Customer;
 import com.example.webshopity.dal.entities.Order;
-import com.example.webshopity.dal.entities.Product;
 import com.example.webshopity.dal.repositories.CustomerRepository;
 import com.example.webshopity.dal.repositories.OrderItemRepository;
 import com.example.webshopity.dal.repositories.OrderRepository;
@@ -55,7 +53,7 @@ public class CustomerController {
     }
 
     @PostMapping("customers/save")
-    public String SaveCustomerInfo(Model model, Customer customer){
+    public String SaveCustomerInfo(Customer customer){
         customerRepository.save(customer);
         return "redirect:/customers";
     }
