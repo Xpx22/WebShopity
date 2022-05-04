@@ -163,3 +163,8 @@
 .paginate-margin{
     margin-top: 3rem;
 }
+
+#page-number-p{
+    font-size: 1.5rem;
+    font-weight: bold;
+}

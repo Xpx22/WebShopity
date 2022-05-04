@@ -51,9 +51,7 @@
             <li>
                 <button class="btn btn-secondary" id="previous-btn">Previous</button>
             </li>
-            <li id="page-number-p" >
-                <!--<p class="btn btn-info">Page: 1</p>-->
-            </li>
+            <li id="page-number-p-container"></li>
             <li>
                 <button class="btn btn-primary" id="next-btn">Next</button>
             </li>
@@ -61,7 +59,6 @@
     </nav>
 
     <div th:replace="fragments/footer :: footer"></div>
-    <!-- Js Plugins -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
             crossorigin="anonymous"></script>
@@ -108,7 +105,7 @@
                             html+=tempHTML;
                         }
                         $("#productlist").html(html);
-                        $("#page-number-p").html("<p class=\"btn btn-info\">Page:"+(currentPage+1)+"</p>");
+                        $("#page-number-p-container").html("<p class=\"btn btn-info\" id=\"page-number-p\">Page:"+(currentPage+1)+"</p>");
                         if(url.includes("product=")){
                             $("#product").val(productnameParam);
                         }else if(url.includes("category=")){
@@ -205,9 +202,9 @@
                         }
                         $("#productlist").html(html);
                         if(isNext){
-                            $("#page-number-p").html("<p class=\"btn btn-info\">Page:"+(currentPage+1)+"</p>");
+                            $("#page-number-p-container").html("<p class=\"btn btn-info\" id=\"page-number-p\">Page:"+(currentPage+1)+"</p>");
                         }else {
-                            $("#page-number-p").html("<p class=\"btn btn-info\">Page:"+(currentPage+1)+"</p>");
+                            $("#page-number-p-container").html("<p class=\"btn btn-info\" id=\"page-number-p\">Page:"+(currentPage+1)+"</p>");
                         }
                         $("#product").val(productnameParam);
                         $("#category").val(categoryParam);
