@@ -18,7 +18,6 @@ public class CartItem implements Serializable {
     @JoinColumn(name = "product_id")
     private Product product;
 
-
     public Long getId() {
         return id;
     }
@@ -42,6 +41,5 @@ public class CartItem implements Serializable {
     public void setProduct(Product product) {
         this.product = product;
     }
-
 }
 

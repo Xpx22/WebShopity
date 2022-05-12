@@ -1,6 +1,8 @@
 package com.example.webshopity.controller;
 
 import com.example.webshopity.dal.entities.Product;
+import com.example.webshopity.dal.repositories.CartItemRepository;
+import com.example.webshopity.dal.repositories.OrderItemRepository;
 import com.example.webshopity.dal.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,10 @@ public class ProductController {
 
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    CartItemRepository cartItemRepository;
+    @Autowired
+    OrderItemRepository orderItemRepository;
 
     @GetMapping("products")
     public String getProductDirectory(Model model){
@@ -30,6 +36,17 @@ public class ProductController {
 
     @PostMapping("/products/save")
     public String SaveProduct(Model model, Product product){
+        var cartItemTemp = cartItemRepository.findByProduct(product);
+        if (cartItemTemp.isPresent()){
+            cartItemTemp.get().setProduct(product);
+            cartItemRepository.save(cartItemTemp.get());
+        }
+
+        var orderItemTemp = orderItemRepository.findByProduct(product);
+        if (orderItemTemp.isPresent()){
+            orderItemTemp.get().setProduct(product);
+            orderItemRepository.save(orderItemTemp.get());
+        }
         productRepository.save(product);
         return "redirect:/products";
     }
@@ -43,6 +60,19 @@ public class ProductController {
 
     @GetMapping("/products/delete/{id}")
     public String displayDeleteProduct(@PathVariable("id") long id){
+        Product prod = new Product();
+        prod.setId(id);
+        var cartItemTemp = cartItemRepository.findByProduct(prod);
+        if (cartItemTemp.isPresent()){
+            cartItemTemp.get().setProduct(prod);
+            cartItemRepository.delete(cartItemTemp.get());
+        }
+
+        var orderItemTemp = orderItemRepository.findByProduct(prod);
+        if (orderItemTemp.isPresent()){
+            orderItemTemp.get().setProduct(prod);
+            orderItemRepository.delete(orderItemTemp.get());
+        }
         productRepository.deleteById(id);
         return "redirect:/products";
     }

@@ -64,6 +64,10 @@
             crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" ></script>
     <script>
+        $(document).ready(function (){
+            ajaxDefault();
+        });
+
         let currentPage = 0;
         const productURL = "http://localhost:8080/allproducts?currentPage=";
 
@@ -126,9 +130,6 @@
             });
         }
 
-        $(document).ready(function (){
-            ajaxDefault();
-        });
 
         $("#previous-btn").click(function(event) {
             $("#previous-btn").attr("disabled", true);
@@ -236,7 +237,6 @@
                 alert("Only 1 search parameter is supported.");
                 return;
             }
-            window.location.replace("http://localhost:8080");
             ajaxDefault(prodParam, catParam, manuParam);
         }
 

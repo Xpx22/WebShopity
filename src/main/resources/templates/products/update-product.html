@@ -26,8 +26,8 @@
             <input type="hidden" th:field="${product.id}" id="id"/>
 
             <div class="form-group">
-                <label for="productname">Product Name:</label>
-                <input type="text" class="form-control" name="productname" placeholder="Product Name*" required="required" th:field="${product.name}" id="name">
+                <label for="name">Product Name:</label>
+                <input type="text" class="form-control" name="name" placeholder="Product Name*" required="required" th:field="${product.name}" id="name">
             </div>
             <div class="form-group">
                 <label for="category">Category:</label>
@@ -70,7 +70,7 @@
 
         function ajaxPost() {
 
-            var productData = {
+            let productData = {
                 id: $("#id").val(),
                 name: $("#name").val(),
                 category: $("#category").val(),
@@ -78,6 +78,7 @@
                 price: $("#price").val(),
                 manufacturer: $("#manufacturer").val()
             }
+            console.log(window.location);
 
             $.ajax({
                 type : "POST",

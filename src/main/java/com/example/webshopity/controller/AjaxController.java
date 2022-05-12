@@ -22,11 +22,16 @@ public class AjaxController {
     @PostMapping("products/update/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable("id") long id, @RequestBody Product prod) {
         var cartItemTemp = cartItemRepository.findByProduct(prod);
-        cartItemTemp.get().setProduct(prod);
-        cartItemRepository.save(cartItemTemp.get());
+        if (cartItemTemp.isPresent()){
+            cartItemTemp.get().setProduct(prod);
+            cartItemRepository.save(cartItemTemp.get());
+        }
+
         var orderItemTemp = orderItemRepository.findByProduct(prod);
-        orderItemTemp.get().setProduct(prod);
-        orderItemRepository.save(orderItemTemp.get());
+        if (orderItemTemp.isPresent()){
+            orderItemTemp.get().setProduct(prod);
+            orderItemRepository.save(orderItemTemp.get());
+        }
         productRepository.save(prod);
         return new ResponseEntity<>(prod, HttpStatus.OK);
     }
