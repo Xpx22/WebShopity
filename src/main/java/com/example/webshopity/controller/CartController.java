@@ -75,7 +75,7 @@ public class CartController {
     }
 
     @GetMapping("cart/delete/{pid}")
-    public String removerFromCart(@PathVariable("pid") Long pid){
+    public String removeFromCart(@PathVariable("pid") Long pid){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomerUserDetails customerUser = (CustomerUserDetails) auth.getPrincipal();
         var customer = customerRepository.findById(customerUser.getId());

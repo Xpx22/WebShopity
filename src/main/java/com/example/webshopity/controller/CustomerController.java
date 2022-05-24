@@ -59,14 +59,14 @@ public class CustomerController {
     }
 
     @GetMapping("/customers/update/{id}")
-    public String DisplayUpdateProduct(@PathVariable("id") long id, Model model){
+    public String DisplayUpdateCustomer(@PathVariable("id") long id, Model model){
         Optional<Customer> c = customerRepository.findById(id);
         model.addAttribute("customer", c.get());
         return "customers/update-customer.html";
     }
 
     @GetMapping("/customers/delete/{id}")
-    public String displayDeleteProduct(@PathVariable("id") long id){
+    public String displayDeleteCustomer(@PathVariable("id") long id){
         var orderList = orderRepository.findByCustomer(id);
         if(orderList.isPresent()){
             for (int i = 0; i < orderList.get().size(); i++){

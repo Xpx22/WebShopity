@@ -75,7 +75,7 @@ public class OrderController {
     }
 
     @GetMapping("/orders/delete/{id}")
-    public String displayDeleteOrder(@PathVariable("id") long id){
+    public String deleteOrder(@PathVariable("id") long id){
         Order o = new Order();
         o.setId(id);
         orderItemRepository.deleteByOrder(o);

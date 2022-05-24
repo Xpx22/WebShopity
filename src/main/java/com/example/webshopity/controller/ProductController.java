@@ -35,7 +35,7 @@ public class ProductController {
     }
 
     @PostMapping("/products/save")
-    public String SaveProduct(Model model, Product product){
+    public String SaveProduct(Product product){
         var cartItemTemp = cartItemRepository.findByProduct(product);
         if (cartItemTemp.isPresent()){
             cartItemTemp.get().setProduct(product);
@@ -59,7 +59,7 @@ public class ProductController {
     }
 
     @GetMapping("/products/delete/{id}")
-    public String displayDeleteProduct(@PathVariable("id") long id){
+    public String deleteProduct(@PathVariable("id") long id){
         Product prod = new Product();
         prod.setId(id);
         var cartItemTemp = cartItemRepository.findByProduct(prod);
