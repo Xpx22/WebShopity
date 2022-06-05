@@ -18,10 +18,6 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    DataSource dataSource;
-
     @Bean
     public UserDetailsService userDetailsService(){
         return new CustomerUserDetailsService();
@@ -36,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(this.authenticationProvider());
 
        /* auth.inMemoryAuthentication()
