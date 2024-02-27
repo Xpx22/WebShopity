@@ -4,6 +4,7 @@ import com.example.webshopity.dal.entities.Product;
 import com.example.webshopity.dal.repositories.CartItemRepository;
 import com.example.webshopity.dal.repositories.OrderItemRepository;
 import com.example.webshopity.dal.repositories.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +14,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    ProductRepository productRepository;
-    @Autowired
-    CartItemRepository cartItemRepository;
-    @Autowired
-    OrderItemRepository orderItemRepository;
+    private final ProductRepository productRepository;
+
+    private final CartItemRepository cartItemRepository;
+
+    private final OrderItemRepository orderItemRepository;
 
     @GetMapping("products")
     public String getProductDirectory(Model model){

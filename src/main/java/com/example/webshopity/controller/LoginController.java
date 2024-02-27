@@ -1,8 +1,7 @@
 package com.example.webshopity.controller;
 
 import com.example.webshopity.dal.entities.Customer;
-import com.example.webshopity.dal.repositories.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -13,9 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginController {
-    @Autowired
-    CustomerRepository customerRepository;
 
     @GetMapping("/login")
     public String displayLogin(Model model){

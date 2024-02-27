@@ -1,8 +1,7 @@
 package com.example.webshopity.dal.entities;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
+
 import java.io.Serializable;
 
 @Entity
